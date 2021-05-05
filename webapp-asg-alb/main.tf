@@ -127,9 +127,10 @@ resource "aws_network_interface" "web1_nic" {
 resource "aws_launch_template" "lt_web" {
   name = "lt-web"
 
-  image_id = "ami-0def94988b0664157"
+  image_id = "ami-06701ac70c2e4f546"
   instance_type = "t2.micro"
   key_name = "ec2-user-ubu"
+  default_version = 2
 
   network_interfaces {
     device_index = 0
@@ -178,12 +179,20 @@ resource "aws_lb" "alb_web" {
 resource "aws_autoscaling_group" "asg_web" {
   availability_zones = ["us-east-1a"]
   desired_capacity   = 1
-  max_size           = 1
+  max_size           = 2
   min_size           = 1
 
   launch_template {
     id      = aws_launch_template.lt_web.id
-    version = "$Latest"
+    version = aws_launch_template.lt_web.latest_version
+  }
+
+  instance_refresh {
+    strategy = "Rolling"
+    preferences {
+      min_healthy_percentage = 50
+    }
+    triggers = ["tag"]
   }
 }
 
