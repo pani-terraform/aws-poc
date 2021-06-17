@@ -9,7 +9,7 @@ provider "aws" {
 }
 
 data "aws_ami" "test" {
-  owners           = ["670461732659"]
+  owners           = ["***********"]
 
   filter {
     name   = "name"
