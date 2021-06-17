@@ -43,7 +43,7 @@ resource "aws_route_table" "webapp_route_table" {
 resource "aws_subnet" "web_private" {
   vpc_id     = aws_vpc.prodvpc.id
   cidr_block = "10.1.1.0/24"
-  availability_zone = "us-east-1a"
+  availability_zone = "us-west-2a"
 
   tags = {
     Name = "web_private"
@@ -112,8 +112,8 @@ resource "aws_eip" "web_eip" {
 resource "aws_instance" "webapp" {
   ami           = var.aws_ami
   instance_type = var.aws_instance_type
-  availability_zone = "us-east-1a"
-  key_name = "ec2-user-ubu"
+  availability_zone = "us-west-2a"
+  key_name = "ec2-user-w2"
   network_interface {
     device_index = 0
     network_interface_id = aws_network_interface.web_nic.id
